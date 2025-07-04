@@ -1,0 +1,160 @@
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+{% block title %}Inveria - Iniciar Sesión{% endblock %}
+
+{% block extra_css %}
+<style>
+  main {
+    flex: 0 0 auto !important;
+    min-height: auto !important;
+  }
+
+  .login-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .login-container {
+    position: relative;
+    z-index: 1;
+    padding: 0 1rem;
+    width: 100%;
+    min-height: calc(100vh - 204px);
+    /* ← ajuste para header + footer */
+    display: flex;
+    align-items: center;
+  }
+
+  .login-card {
+    width: 95%;
+    max-width: 450px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    color: #fff;
+  }
+
+  .login-card label,
+  .login-card h2 {
+    color: #fff;
+  }
+
+  .login-card .form-control {
+    background-color: rgb(255, 255, 255);
+    border: none;
+    color: #000000;
+  }
+
+  .login-card .form-control::placeholder {
+    color: #000000;
+  }
+
+  @media (min-width: 992px) {
+    .login-container {
+      justify-content: flex-end;
+      padding-right: 400px;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    .card.mx-auto.mx-md-0 {
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+
+
+    .login-bg {
+      object-position: left;
+
+    }
+  }
+
+
+
+
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeBackground {
+    0% {
+      opacity: 0;
+      filter: brightness(0.5) saturate(0.8);
+      transform: scale(1.05);
+    }
+
+    100% {
+      opacity: 1;
+      filter: brightness(1) saturate(1);
+      transform: scale(1);
+    }
+  }
+
+  .login-bg {
+    animation: fadeBackground 1.5s ease-out forwards;
+    opacity: 0;
+    transition: filter 0.5s ease;
+  }
+
+  .login-card {
+    animation: fadeIn 1.2s ease-out forwards;
+    opacity: 0;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="bg-dark">
+
+  <div class="position-relative" style="overflow: hidden;">
+    <img src="{% static 'img/fondo.png' %}" alt="Fondo Login" class="login-bg" />
+
+    <div class="login-container">
+      <div class="card shadow-lg p-4 border-0 rounded-4 mx-auto mx-md-0 login-card">
+        <h2 class="mb-3 text-center fw-semibold" style="font-size: 1.4rem;">Iniciar Sesión</h2>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" novalidate>
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="username" class="form-label fw-semibold">Usuario</label>
+            <input type="text" class="form-control rounded-3" id="username" name="username" required autofocus
+              placeholder="Ingresa tu usuario" />
+          </div>
+          <div class="mb-4">
+            <label for="password" class="form-label fw-semibold">Contraseña</label>
+            <input type="password" class="form-control rounded-3" id="password" name="password" required
+              placeholder="Ingresa tu contraseña" />
+          </div>
+          <button type="submit" class="btn btn-primary w-100 fw-semibold rounded-3">Ingresar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

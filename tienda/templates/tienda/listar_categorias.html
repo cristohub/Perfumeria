@@ -1,0 +1,77 @@
+{% extends 'tienda/base.html' %}
+
+{% block title %}Categorías{% endblock %}
+
+{% block content %}
+
+<div class="container mb" style="margin-top: 50px;">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class=" fw-semibold">Categorías</h2>
+    <!-- Botón para abrir el modal -->
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearCategoriaModal">
+      <i class="bi bi-plus-lg"></i> Agregar Categoría
+    </button>
+  </div>
+
+
+
+  {% if categorias %}
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+
+    {% for categoria in categorias %}
+    <div class="col">
+      <div class="card rounded-4 h-100 shadow-sm border border-secondary-subtle" style="border-radius: 4px;">
+        {% if categoria.foto_destacada %}
+        <img src="{{ categoria.foto_destacada.url }}" class="card-img-top rounded-top-4" alt="{{ categoria.nombre }}"
+          style="border-top-left-radius: 4px; border-top-right-radius: 4px;">
+        {% endif %}
+        <div class="card-body d-flex flex-column justify-content-center align-items-center">
+          <a href="{% url 'productos_por_categoria' categoria.id %}"
+            class="stretched-link text-decoration-none text-dark fw-semibold fs-5">
+            {{ categoria.nombre }} ({{ categoria.num_productos }})
+          </a>
+        </div>
+        <a href="{% url 'categoria_editar' categoria.id %}"
+          class="position-absolute top-0 end-0 mt-2 me-2 px-3 py-1 rounded bg-warning text-dark fw-semibold shadow"
+          style="z-index: 10; text-decoration: none;">
+          <i class="bi bi-pencil me-1"></i> Editar
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+
+
+  </div>
+  {% else %}
+  <div class="alert alert-warning" role="alert">
+    No hay categorías disponibles.
+  </div>
+  {% endif %}
+
+  <!-- Modal para crear categoría -->
+  <div class="modal fade" id="crearCategoriaModal" tabindex="-1" aria-labelledby="crearCategoriaLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md"> <!-- tamaño medio -->
+      <div class="modal-content rounded-3 border-0 shadow" style="background: #f9f9f9;">
+        <form method="post" action="" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+          <div class="modal-header border-0 pb-0">
+            <h5 class="modal-title text-success fw-bold" id="crearCategoriaLabel">Crear Nueva Categoría</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body pt-1">
+            {{ form.as_p }}
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button type="button" class="btn btn-outline-secondary me-auto px-4"
+              data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success px-4">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

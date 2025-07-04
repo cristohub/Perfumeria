@@ -1,0 +1,27 @@
+{% extends 'tienda/base.html' %}
+
+{% block title %}Inicio - Tienda{% endblock %}
+
+{% block content %}
+<style>
+  /* Ajustamos el hero para que ocupe toda la pantalla menos el header */
+  .hero {
+
+    /* Ajusta 70px si tu header tiene otro alto */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+    color: white;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+  }
+</style>
+
+<section class="hero">
+  <div class="text-center px-3">
+    <h1 class="display-4 fw-bold">Bienvenido a Mi Tienda Perfumería</h1>
+    <p class="lead">Fragancias Orientales de Alta Calidad para Ti</p>
+    <a href="#" class="btn btn-primary btn-lg mt-3">Explorar Productos</a>
+  </div>
+</section>
+{% endblock %}
