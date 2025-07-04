@@ -1,0 +1,61 @@
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+ font-family: 'Poppins', sans-serif;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+footer {
+  flex-shrink: 0;
+  background-color: black;
+
+}
+header{
+  background-color: rgb(0, 17, 114);
+}
+
+
+
+   .btn-outline-primary:hover i {
+    color: white !important; /* Ícono blanco cuando el fondo se vuelve azul */
+  }
+
+  .btn-outline-warning:hover i {
+    color: black !important; /* Ícono oscuro cuando el fondo se vuelve amarillo */
+  }
+
+  .btn-outline-primary i,
+  .btn-outline-warning i {
+    transition: color 0.2s ease;
+  }
+
+
+
+
+  .card {
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  z-index: 5;
+}
+
+.card:hover .card-body a {
+  color: #198754; /* color verde bootstrap para destacar */
+  text-decoration: underline;
+  font-weight: 700;
+}

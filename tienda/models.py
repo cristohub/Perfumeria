@@ -2,22 +2,14 @@ import os
 from django.db import models
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
-# Validador: solo permite imágenes .png
+
+# === VALIDADORES ===
+
 def validar_imagen_png(file):
     if not file.name.lower().endswith('.png'):
         raise ValidationError("Solo se permiten archivos PNG.")
-
-# Función para personalizar el nombre del archivo
-def nombre_foto_producto(instance, filename):
-    nombre = slugify(instance.nombre)
-    marca = slugify(instance.marca.nombre)
-    extension = os.path.splitext(filename)[1]
-    nuevo_nombre = f"{nombre}-{marca}{extension}"
-    return os.path.join('productos', nuevo_nombre)
-
-
-
 
 def validar_imagen_png_jpg(file):
     valid_extensions = ['.png', '.jpg', '.jpeg']
@@ -25,12 +17,30 @@ def validar_imagen_png_jpg(file):
     if ext not in valid_extensions:
         raise ValidationError("Solo se permiten archivos PNG, JPG o JPEG.")
 
-# MODELOS
+
+# === FUNCIONES PARA NOMBRES DE ARCHIVOS ===
+
+def nombre_foto_categoria(instance, filename):
+    nombre = slugify(instance.nombre)
+    extension = os.path.splitext(filename)[1]
+    nuevo_nombre = f"{nombre}{extension}"
+    return os.path.join('categorias', nuevo_nombre)  # ✅ sin subcarpeta por categoría
+
+def nombre_foto_producto(instance, filename):
+    nombre = slugify(instance.nombre)
+    marca = slugify(instance.marca.nombre)
+    extension = os.path.splitext(filename)[1]
+    nuevo_nombre = f"{nombre}-{marca}{extension}"
+    return os.path.join('productos', nuevo_nombre)  # ✅ sin subcarpeta por producto
+
+
+# === MODELOS ===
 
 class Categoria(models.Model):
     nombre = models.CharField(max_length=50)
     foto_destacada = models.ImageField(
-        upload_to='categorias/',
+        upload_to=nombre_foto_categoria,
+        storage=MediaCloudinaryStorage(),
         blank=True,
         null=True,
         validators=[validar_imagen_png_jpg],
@@ -61,7 +71,6 @@ class Producto(models.Model):
         ('fresco', 'Fresco'),
         ('dulce', 'Dulce'),
         ('acuatico', 'Acuático'),
-        # Puedes agregar más tipos si lo necesitas
     ]
 
     nombre = models.CharField(max_length=100)
@@ -80,6 +89,7 @@ class Producto(models.Model):
     )
     foto = models.ImageField(
         upload_to=nombre_foto_producto,
+        storage=MediaCloudinaryStorage(),
         blank=True,
         null=True,
         validators=[validar_imagen_png]
